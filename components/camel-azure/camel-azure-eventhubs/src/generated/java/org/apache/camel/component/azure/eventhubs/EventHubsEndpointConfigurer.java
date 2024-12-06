@@ -151,6 +151,8 @@ public class EventHubsEndpointConfigurer extends PropertyConfigurerSupport imple
         case "blobContainerName": return target.getConfiguration().getBlobContainerName();
         case "blobstoragesharedkeycredential":
         case "blobStorageSharedKeyCredential": return target.getConfiguration().getBlobStorageSharedKeyCredential();
+        case "blobtokencredential":
+        case "blobTokenCredential": return target.getConfiguration().getBlobTokenCredential();
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return target.isBridgeErrorHandler();
         case "checkpointbatchsize":

@@ -69,6 +69,8 @@ public class EventHubsConfiguration implements Cloneable {
     private String blobContainerName;
     @UriParam(label = "consumer", secret = true)
     private StorageSharedKeyCredential blobStorageSharedKeyCredential;
+    @UriParam(label = "security", secret = true)
+    private TokenCredential blobTokenCredential;
     @UriParam(label = "consumer")
     private Map<String, EventPosition> eventPosition = new HashMap<>();
     @UriParam(label = "consumer", defaultValue = "500")
@@ -316,6 +318,17 @@ public class EventHubsConfiguration implements Cloneable {
 
     public void setBlobStorageSharedKeyCredential(StorageSharedKeyCredential blobStorageSharedKeyCredential) {
         this.blobStorageSharedKeyCredential = blobStorageSharedKeyCredential;
+    }
+
+    /**
+     * Provide custom authentication credentials using an implementation of {@link TokenCredential} to access the BlobCheckpointStore.
+     */
+    public TokenCredential getBlobTokenCredential() {
+        return blobTokenCredential;
+    }
+
+    public void setBlobTokenCredential(TokenCredential blobTokenCredential) {
+        this.blobTokenCredential = blobTokenCredential;
     }
 
     /**

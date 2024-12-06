@@ -130,11 +130,14 @@ public final class EventHubsClientFactory {
 
     // public for testing purposes
     public static BlobContainerAsyncClient createBlobContainerClient(final EventHubsConfiguration configuration) {
-        return new BlobContainerClientBuilder()
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
                 .endpoint(buildAzureEndpointUri(configuration))
-                .containerName(configuration.getBlobContainerName())
-                .credential(getCredentialForClient(configuration))
-                .buildAsyncClient();
+                .containerName(configuration.getBlobContainerName());
+        if (configuration.getBlobTokenCredential() != null)
+            builder.credential(configuration.getTokenCredential());
+        else
+            builder.credential(getCredentialForClient(configuration));
+        return builder.buildAsyncClient();
     }
 
     private static void checkTokenCredentialConfiguration(final EventHubsConfiguration configuration) {
@@ -161,6 +164,9 @@ public final class EventHubsClientFactory {
 
     private static boolean isCredentialsSet(final EventHubsConfiguration configuration) {
         if (ObjectHelper.isNotEmpty(configuration.getBlobStorageSharedKeyCredential())) {
+            return true;
+        }
+        if (ObjectHelper.isNotEmpty(configuration.getBlobTokenCredential())) {
             return true;
         }
 
